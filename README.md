@@ -1,15 +1,13 @@
-# Naming your Repo
+# Forex Project
 
-Use this template repo to create your own repository in this organization.    
-Please name your repo `[semester][yeartwodigits]_[lastname]_[firstname]`.  For example s21_hathaway_j
+### Overview
 
-- Spring = S
-- Fall = F
-- Winter = W
+The foreign exchange market is where the trading of currency from different countries happens.
+The different banks release news about the different currencies.
+I want to be able to take and read this news and be able to use it and other variables as indicators on which direction the currency will go (up/down/sideways).
+I want to use NLP and other machine learning methods to accomplish this.
 
-# Blank Project Template
 
-A blank project repository for folder structure and naming guidance.  The `confidentiality_agreement.md` can be used if you are working with a client.  Please make sure to create a private repo for client work.
 
 ## High-level folders
 
