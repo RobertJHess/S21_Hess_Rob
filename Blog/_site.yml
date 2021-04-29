@@ -2,7 +2,7 @@ name: "Blog"
 title: "Forex Senior Project"
 description: |
   Forex Senior Project
-output_dir: "../docs/_site"
+output_dir: "../docs"
 navbar:
   right:
     - text: "Home"
