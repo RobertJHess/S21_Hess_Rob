@@ -1,5 +1,22 @@
 [
   {
+    "path": "posts/2021-05-19-text-candles-and-dates/",
+    "title": "Text, Candles, and Dates",
+    "description": "Data Collection",
+    "author": [
+      {
+        "name": "Robert Hess",
+        "url": {}
+      }
+    ],
+    "date": "2021-05-19",
+    "categories": [],
+    "contents": "\r\nData Collection\r\nThis project requires data from many different sources to be combined together. I needed to find and obtain raw text from the Federal Reserve, Candle Data from Oanda, and Dates and Times from forexfactory.\r\nFederal Reserve & Forex Factory\r\nIn order to find which news events I wanted to use, I went through the Forex Factory and found one of the events on their calender. These FOMC Statements have a naming pattern on the Federal Reserve Website. They are marked by date. I found a list of dates for all of the statements that happened since 2007. I used python to download the HTMLs and then stripped the Statement text from the HTMLS using some simple regex.\r\nOanda\r\nOanda can provide their candle data to those who have their API. I used a candle downloader from the company Liberty Dynamic Consultants in which I am a stakeholder and have access to their technology. Getting the Postgresql database setup on my computer had a few settings issues that made it difficult.\r\nData Wrangling\r\nRegexes\r\nLook Aheads and Look Behinds This regex finds any “.” or lowercase letter that is followed by an uppercase letter. ([.a-z](?=[A-Z])) This regex finds 2 or more whitespaces together that have words ahead and digits behind. ((?<![\\d\\s])\\s\\s+(?=\\w))\r\nRemove punct This regex finds all none word and none space and non “-” characters and deletes them. re.sub(r'[^\\w\\s-]', '', x)\r\nAverage True Range (ATR)\r\nThe ATR is the average amount that the market is moving. In order to calculate this take the high of a candle and subtract the low. Add this number to all the other high-low and divide by the number of candles. Example of doing this in R: candles_with_atr_30_min <- candles_filtered %>% arrange(date) %>% mutate(row_num = row_number()) %>% rowwise() %>% mutate(atr = atr_calc(candles_filtered[(abs(row_num-14)):abs(row_num-1),3], candles_filtered[abs(row_num-14):abs(row_num-1),4]))\r\natr_calc <- function(high.df, low.df){ return(sum(high.df - low.df) / nrow(high.df)) }\r\nThe ATR will be part of how we will be classifying the raw text.\r\n\r\n\r\n\r\n",
+    "preview": {},
+    "last_modified": "2021-05-19T22:54:28-06:00",
+    "input_file": {}
+  },
+  {
     "path": "posts/welcome/",
     "title": "Welcome to Forex Senior Project",
     "description": "Welcome to our new blog, Forex Senior Project. We hope you enjoy \nreading what we have to say!",

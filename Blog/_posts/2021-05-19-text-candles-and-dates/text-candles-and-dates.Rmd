@@ -1,0 +1,65 @@
+---
+title: "Text, Candles, and Dates"
+description: |
+  Data Collection
+author:
+  - name: Robert Hess
+    url: {}
+date: 05-19-2021
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r load.libraries, include=FALSE}
+library(tidyverse)
+library(lubridate)
+library(dygraphs)
+```
+
+
+# Data Collection
+
+This project requires data from many different sources to be combined together. I needed to find and obtain raw text from the [Federal Reserve](https://www.federalreserve.gov/monetarypolicy/FOMC_historical_year.htm), Candle Data from [Oanda](www.oanda.com), and Dates and Times from [forexfactory](forexfactory.com).
+
+### Federal Reserve & Forex Factory
+
+In order to find which news events I wanted to use, I went through the [Forex Factory](forexfactory.com) and found one of the events on their calender. These FOMC Statements have a naming pattern on the Federal Reserve Website. They are marked by date. I found a list of dates for all of the statements that happened since 2007. I used python to download the HTMLs and then stripped the Statement text from the HTMLS using some simple regex.
+
+### Oanda
+
+Oanda can provide their candle data to those who have their API. I used a candle downloader from the company Liberty Dynamic Consultants in which I am a stakeholder and have access to their technology. Getting the Postgresql database setup on my computer had a few settings issues that made it difficult.
+
+
+# Data Wrangling
+
+### Regexes
+
+**Look Aheads and Look Behinds**
+This regex finds any "." or lowercase letter that is followed by an uppercase letter.
+`([.a-z](?=[A-Z]))`
+This regex finds 2 or more whitespaces together that have words ahead and digits behind.
+`((?<![\d\s])\s\s+(?=\w))`
+
+**Remove punct**
+This regex finds all none word and none space and non "-" characters and deletes them.
+`re.sub(r'[^\w\s-]', '', x)`
+
+
+### Average True Range (ATR)
+
+The ATR is the average amount that the market is moving. In order to calculate this take the high of a candle and subtract the low. Add this number to all the other high-low and divide by the number of candles. Example of doing this in R: `candles_with_atr_30_min <- candles_filtered %>%`
+  `arrange(date) %>%`
+  `mutate(row_num = row_number()) %>%`
+  `rowwise() %>% `
+  `mutate(atr = atr_calc(candles_filtered[(abs(row_num-14)):abs(row_num-1),3],`
+  `candles_filtered[abs(row_num-14):abs(row_num-1),4]))`
+  
+`atr_calc <- function(high.df, low.df){ return(sum(high.df - low.df) / nrow(high.df)) }`
+
+The ATR will be part of how we will be classifying the raw text.
+
